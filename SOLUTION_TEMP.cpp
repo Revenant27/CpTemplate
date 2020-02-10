@@ -12,7 +12,7 @@ typedef vector<ii> vii;
 #define lastone(n) ((n)&(-(n)))
 #define read freopen("debug\\in.txt","r",stdin)
 #define write freopen("debug\\out.txt","w",stdout)
-#define DBG(a) cout<<"a# ->->->-> "<<a<<"\n"
+#define DBG(a) cout<<#a<<" ->->->-> "<<a<<"\n"
 #define EN cout<<"\n"
 #define fi first
 #define se second
