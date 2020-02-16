@@ -1,25 +1,33 @@
-vii adj[asz];
-bool bell_ford(vi &dis,ll ind)
+vector<pair<int,int>> adj[200005];
+bool spfa(int s,int n,vector<int> &dis)
 {
-    dis[ind]=0;
-    ll n=dis.size();
-    for(int i=0;i<n-1;i++)
+    dis.assign(n+1,1000000000);
+    dis[s]=0;
+    queue<int> q;
+    q.push(s);
+    vector<bool> taken(n+1,0);
+    vector<int> cnt(n+1,0);
+    taken[s]=1;
+    while(!q.empty())
     {
-        for(int j=0;j<n;j++)
+        int u=q.front();
+        q.pop();
+        taken[u]=0;
+        for(auto x:adj[u])
         {
-            for(auto x:adj[j])
+            if(dis[u]+x.second<dis[x.first])
             {
-                dis[x.fi]=min(dis[x.fi],dis[j]+x.se);
+                dis[x.first]=dis[u]+x.second;
+                if(!taken[x.first])
+                {
+                    q.push(x.first);
+                    taken[x.first]=1;
+                    cnt[x.first]++;
+                    if(cnt[x.first]>n)
+                        return true;
+                }
             }
         }
     }
-    bool neg_cycle=false;
-    for(int j=0;j<n;j++)
-    {
-        for(auto x:adj[j])
-        {
-            if(dis[x.fi]>dis[j]+x.se)dis[x.fi]=dis[j]+x.se,neg_cycle=true;
-        }
-    }
-    return neg_cycle;
+    return false;
 }
