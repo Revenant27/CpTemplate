@@ -1,4 +1,15 @@
 
+long long mult(long long a, long long b, long long mod) {
+    long long result = 0;
+    while (b) {
+        if (b & 1)
+            result = (result + a) % mod;
+        a = (a + a) % mod;
+        b >>= 1;
+    }
+    return result;
+}
+
 bool probablyPrimeFermat(int n, int iter=5) {
     if (n < 4)
         return n == 2 || n == 3;
@@ -10,13 +21,13 @@ bool probablyPrimeFermat(int n, int iter=5) {
     }
     return true;
 }
-ll binpower(ll base, ll e, ll mod) {
+ll binpower(ll base, ll e, ll md) {
     ll result = 1;
-    base %= mod;
+    base %= md;
     while (e) {
         if (e & 1)
-            result = result * base % mod;
-        base = base * base % mod;
+            result =mult(result,base,md);
+        base = mult(base,base,md);
         e >>= 1;
     }
     return result;
@@ -27,7 +38,7 @@ bool check_composite(ll n, ll a, ll d, int s) {
     if (x == 1 || x == n - 1)
         return false;
     for (int r = 1; r < s; r++) {
-        x = x * x % n;
+        x = mult(x,x,n);
         if (x == n - 1)
             return false;
     }
@@ -52,17 +63,6 @@ bool MillerRabin(ll n) { // returns true if n is prime, else returns false.
             return false;
     }
     return true;
-}
-
-long long mult(long long a, long long b, long long mod) {
-    long long result = 0;
-    while (b) {
-        if (b & 1)
-            result = (result + a) % mod;
-        a = (a + a) % mod;
-        b >>= 1;
-    }
-    return result;
 }
 
 
