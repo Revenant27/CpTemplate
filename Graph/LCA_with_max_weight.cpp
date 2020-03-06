@@ -1,4 +1,4 @@
-
+//Call with root,root
 ll tin[asz],tout[asz],timer;
 ll up[asz][25],wg[asz][25];
 void dfs(ll ind,ll par,ll weight=0)
