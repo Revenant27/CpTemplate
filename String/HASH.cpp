@@ -2,20 +2,20 @@
 using namespace std;
 typedef long long int ll;
 #define asz 100
-ll NOB=2;
+const int NOB=2;
 class Hash
 {
 public:
-    vector<ll> v;
-    Hash(ll vl=0){v.assign(NOB,vl);}
-    Hash(vector<ll> _v):v(_v){}
+    ll v[NOB];
+    Hash(ll vl=0){for(int i=0;i<NOB;i++)v[i]=vl;}
+    Hash(ll _v[]){for(int i=0;i<NOB;i++)v[i]=_v[i];}
     Hash operator+(Hash x){Hash ans(NOB); for(int i=0;i<NOB;i++)ans.v[i]=v[i]+x.v[i];return ans;}
     Hash operator*(Hash x){Hash ans(NOB); for(int i=0;i<NOB;i++)ans.v[i]=v[i]*x.v[i];return ans;}
     Hash operator*(ll x){Hash ans(NOB); for(int i=0;i<NOB;i++)ans.v[i]=v[i]*x;return ans;}
     Hash operator-(Hash x){Hash ans(NOB); for(int i=0;i<NOB;i++)ans.v[i]=v[i]-x.v[i];return ans;}
     Hash operator%(Hash x){Hash ans(NOB); for(int i=0;i<NOB;i++)ans.v[i]=v[i]%x.v[i];return ans;}
-    bool operator<(Hash x){return v<x.v;}
-    bool operator==(Hash x){return v==x.v;}
+    bool operator<(Hash x){for(int i=0;i<NOB;i++)if(v[i]!=x.v[i])return v[i]<x.v[i];return false;}
+    bool operator==(Hash x){int i=0;while(i<NOB&&v[i]==x.v[i])i++;return i==NOB;}
     friend ostream& operator<<(ostream& s,Hash x)
     {
         cout<<"{ ";
@@ -39,8 +39,10 @@ ll bigmod(ll a,ll p, ll m)
     }
     return res;
 }
-Hash base({31,53});
-Hash MOD({(ll)(1e9+7),(ll)(1e9+9)});
+ll _b[]={31,53};
+ll _m[]={(ll)(1e9+7),(ll)(1e9+9)};
+Hash base(_b);
+Hash MOD(_m);
 Hash val[asz],pn[asz],pinv[asz];
 void preprocess()
 {
@@ -56,19 +58,13 @@ void preprocess()
         pinv[i]=(pinv[i-1]*pinv[1])%MOD;
     }
 }
-Hash full_hash(vector<ll> &v)
+Hash full_hash(string &v)
 {
     for(int i=1;i<=v.size();i++)
     {
-        val[i]=(val[i-1]+pn[i-1]*v[i-1])%MOD;
+        val[i]=(val[i-1]+pn[i-1]*(ll)(v[i-1]-'a'+1))%MOD;
     }
     return val[(ll)v.size()];
-}
-Hash string_hashing(string &s)
-{
-    vector<ll> v;
-    for(auto x:s)v.push_back(x-'a'+1);
-    return full_hash(v);
 }
 //0 indexed
 Hash hashed_val(ll l,ll r)
@@ -81,5 +77,15 @@ int main()
     string s;
     cin>>s;
     preprocess();
-    cout<<string_hashing(s)<<endl;
+    cout<<full_hash(s)<<endl;
+    ll q;
+    for(int i=0;i<s.size();i++)cout<<val[i]<<endl;
+    cin>>q;
+    while(q--)
+    {
+        ll l,r;
+        cin>>l>>r;
+        cout<<s.substr(l,(r-l+1))<<endl;
+        cout<<hashed_val(l,r)<<endl;
+    }
 }
