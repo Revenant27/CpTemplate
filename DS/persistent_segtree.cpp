@@ -66,3 +66,62 @@ ll solve(ll x,ll y,ll k,ll ind)
     }
     return lo;
 }
+
+
+//Without pointer
+ll ind;
+struct vert
+{
+    ll l,r;
+    ll s;
+    vert(ll s=0):s(s){l=0,r=0;}
+};
+vert st[25*asz];
+int roots[asz];
+ll f(ll l,ll r)
+{
+    return l+r;
+}
+void init(ll node,ll ss,ll sf)
+{
+    if(ss==sf)
+    {
+        st[node].s=0;
+        return;
+    }
+    ll mid=(ss+sf)/2;
+    st[node].l=ind++;
+    st[node].r=ind++;
+    init(st[node].l,ss,mid);
+    init(st[node].r,mid+1,sf);
+    st[node].s=f(st[st[node].l].s,st[st[node].r].s);
+}
+void update(ll cur,ll pre,ll ss,ll sf,ll pos,ll val)
+{
+    if(ss==sf)
+    {
+        st[cur].s=st[pre].s+val;
+        return;
+    }
+    ll mid=(ss+sf)/2;
+    if(pos<=mid)
+    {
+        st[cur].r=st[pre].r;
+        st[cur].l=ind++;
+        update(st[cur].l,st[pre].l,ss,mid,pos,val);
+    }
+    else
+    {
+        st[cur].l=st[pre].l;
+        st[cur].r=ind++;
+        update(st[cur].r,st[pre].r,mid+1,sf,pos,val);
+    }
+    st[cur].s=f(st[st[cur].l].s,st[st[cur].r].s);
+}
+ll query(ll node,ll node2,ll ss,ll sf,ll qs,ll qe)
+{
+    if(qs>sf||qe<ss||qs>qe)return 0;
+    if(qs<=ss&&qe>=sf)return st[node2].s-st[node].s;
+    ll mid=(ss+sf)/2;
+    return f(query(st[node].l,st[node2].l,ss,mid,qs,qe),query(st[node].r,st[node2].r,mid+1,sf,qs,qe));
+}
