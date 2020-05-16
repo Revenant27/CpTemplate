@@ -13,14 +13,13 @@ typedef vector<ii> vii;
 #define read freopen("debug\\in.txt","r",stdin)
 #define write freopen("debug\\out.txt","w",stdout)
 #define DBG(a) cout<<#a<<" ->->->-> "<<a<<"\n"
-#define EN cout<<"\n"
 #define fi first
 #define se second
 #define PI (acos(-1))
 #define fastread ios::sync_with_stdio(false);cin.tie(NULL)
 #define mod (1000000007)
 #define asz 500005
-template<class T> ostream& operator<<(ostream &s,pair<T,ll> a)
+template<class T,class V> ostream& operator<<(ostream &s,pair<T,V> a)
 {
     s<<a.fi<<' '<<a.se;
     return s;
