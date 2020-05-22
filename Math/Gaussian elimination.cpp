@@ -25,3 +25,32 @@ int gauss(vector<vector<double>> &mat,vector<double> &ans){        //returns -1 
     }
     return ret;
 }
+
+
+
+
+//modular SLAE (mod=2)
+int gauss(vector<bitset<asz>> &mat,int m,bitset<asz> &ans){
+    int n=mat.size();
+    vector<int> w(m,-1);
+    int ret=1;
+    for(int i=0,j=0;j<n&&i<m;i++){
+        for(int k=j;k<n;k++)if(mat[k][i]){swap(mat[j],mat[k]);break;}
+        if(!mat[j][i]){
+            ret=0;
+            continue;
+        }
+        for(int k=0;k<n;k++){
+                if(k!=j&&mat[k][i])mat[k]^=mat[j];
+        }
+        w[i]=j++;
+    }
+    ans.reset();
+    for(int i=0;i<m;i++)if(w[i]!=-1)ans[i]=mat[w[i]][m];
+    for(int i=0;i<n;i++){
+        int d=0;
+        for(int j=0;j<m;j++)d+=(ans[j]&mat[i][j]);
+        if(d^mat[i][m])return -1;
+    }
+    return ret;
+}
