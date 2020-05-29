@@ -35,7 +35,6 @@ bool spfa(int s,int n,vector<int> &dis)
 
 
 //To retrieve the neg cycle
-vii adj[asz];
 vector<int> bellman(int s,int n,vector<int> &dis)
 {
     dis.assign(n,INF);
@@ -46,12 +45,12 @@ vector<int> bellman(int s,int n,vector<int> &dis)
     {
         c = -1;
         for(int j=0;j<n;j++){
+            if(dis[j]==INF)continue;
             for(auto x:adj[j]){
-                if(dis[x.fi]==INF)continue;
-                if(dis[j]>dis[x.fi]+x.se){
+                if(dis[x.fi]>dis[j]+x.se){
                     c=j;
-                    p[j]=x.fi;
-                    dis[j]=dis[x.fi]+x.se;
+                    p[x.fi]=j;
+                    dis[x.fi]=dis[j]+x.se;
                 }
             }
         }
