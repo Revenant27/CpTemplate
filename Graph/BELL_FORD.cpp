@@ -35,44 +35,39 @@ bool spfa(int s,int n,vector<int> &dis)
 
 
 //To retrieve the neg cycle
-void solve()
+vii adj[asz];
+vector<int> bellman(int s,int n,vector<int> &dis)
 {
-    vector<int> d (n, INF);
-    d[v] = 0;
-    vector<int> p (n - 1);
-    int x;
+    dis.assign(n,INF);
+    dis[s] = 0;
+    vector<int> p (n ,- 1);
+    int c;
     for (int i=0; i<n; ++i)
     {
-        x = -1;
-        for (int j=0; j<m; ++j)
-            if (d[e[j].a] < INF)
-                if (d[e[j].b] > d[e[j].a] + e[j].cost)
-                {
-                    d[e[j].b] = max (-INF, d[e[j].a] + e[j].cost);
-                    p[e[j].b] = e[j].a;
-                    x = e[j].b;
+        c = -1;
+        for(int j=0;j<n;j++){
+            for(auto x:adj[j]){
+                if(dis[x.fi]==INF)continue;
+                if(dis[j]>dis[x.fi]+x.se){
+                    c=j;
+                    p[j]=x.fi;
+                    dis[j]=dis[x.fi]+x.se;
                 }
-    }
-
-    if (x == -1)
-        cout << "No negative cycle from " << v;
-    else
-    {
-        int y = x;
-        for (int i=0; i<n; ++i)
-            y = p[y];
-
-        vector<int> path;
-        for (int cur=y; ; cur=p[cur])
-        {
-            path.push_back (cur);
-            if (cur == y && path.size() > 1)
-                break;
+            }
         }
-        reverse (path.begin(), path.end());
-
-        cout << "Negative cycle: ";
-        for (size_t i=0; i<path.size(); ++i)
-            cout << path[i] << ' ';
     }
+
+    if (c == -1)return vector<int>(0);
+    int x = c;
+    for (int i=0; i<n; ++i)
+        x = p[x];
+    vector<int> path;
+    for (int i=x; ; i=p[i])
+    {
+        if (i == x && path.size())
+            break;
+        path.push_back (i);
+    }
+    reverse (path.begin(), path.end());
+    return path;
 }
