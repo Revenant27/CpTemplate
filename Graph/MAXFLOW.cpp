@@ -299,56 +299,64 @@ ii maxflow()
 }
 //BETTER
 
-unordered_map<ll,ii> adj[asz];
-ll p[asz];
-ll f,s,t;
-void augment(ll ind,ll minf)
-{
-    if(ind==s)f=minf;
-    else if(p[ind]!=-1)
-    {
-        augment(p[ind],min(adj[p[ind]][ind].fi,minf));
-        adj[p[ind]][ind].fi-=f,adj[ind][p[ind]].fi+=f;
-//        if(!adj[p[ind]][ind].fi)adj[p[ind]].erase(adj[p[ind]].find(ind));
+struct mcmf{
+    vector<unordered_map<ll,ii>> adj;
+    vector<ll> p;
+    ll n,f,s,t;
+    mcmf(ll _n,ll _s,ll _t):n(_n),s(_s),t(_t){
+        adj.resize(n);
     }
-}
-ii maxflow()
-{
-    ll mf=0,mincost=0;
-    while(1)
+    void augment(ll ind,ll minf)
     {
-        f=0;
-        vi dis(asz,INF);
-        dis[s]=0;
-        memset(p,-1,sizeof p);
-        queue<ll> q;
-        q.push(s);
-        vi d(asz,0);
-        while(!q.empty())
+        if(ind==s)f=minf;
+        else if(p[ind]!=-1)
         {
-            ll u=q.front();
-            q.pop();
-            d[u]=0;
-            for(auto x:adj[u])
+            augment(p[ind],min(adj[p[ind]][ind].fi,minf));
+            adj[p[ind]][ind].fi-=f,adj[ind][p[ind]].fi+=f;
+//        if(!adj[p[ind]][ind].fi)adj[p[ind]].erase(adj[p[ind]].find(ind));
+        }
+    }
+    void addedge(ll u,ll v,ll cap,ll cost)
+    {
+        adj[u][v]=ii(cap,cost);
+        adj[v][u]=ii(0,-cost);
+    }
+    ii maxflow()
+    {
+        ll mf=0,mincost=0;
+        while(1)
+        {
+            f=0;
+            vi dis(asz,INF);
+            dis[s]=0;
+            p.assign(n,-1);
+            queue<ll> q;
+            q.push(s);
+            vi d(asz,0);
+            while(!q.empty())
             {
-                if(x.se.fi>0&&dis[x.fi]>dis[u]+x.se.se)
+                ll u=q.front();
+                q.pop();
+                d[u]=0;
+                for(auto x:adj[u])
                 {
-                    dis[x.fi]=dis[u]+x.se.se;
-                    p[x.fi]=u;
-                    if(d[x.fi]==0)q.push(x.fi);
-                    d[x.fi]=1;
+                    if(x.se.fi>0&&dis[x.fi]>dis[u]+x.se.se)
+                    {
+                        dis[x.fi]=dis[u]+x.se.se;
+                        p[x.fi]=u;
+                        if(d[x.fi]==0)q.push(x.fi);
+                        d[x.fi]=1;
+                    }
                 }
             }
+            augment(t,INF);
+            if(f==0)break;
+            mf+=f;
+            mincost+=dis[t]*f;
         }
-        augment(t,INF);
-        if(f==0)break;
-        mf+=f;
-        mincost+=dis[t]*f;
+        return ii(mf,mincost);
     }
-    return ii(mf,mincost);
-}
-
-
+};
 // Min-cost Max-flow using SPFA ( by Sabit Zahin )
 // - 0 Based indexed for directed weighted graphs
 // - for undirected graphs, add two directed edges
