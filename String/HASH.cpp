@@ -14,7 +14,8 @@ public:
     Hash operator*(ll x){Hash ans(NOB); for(int i=0;i<NOB;i++)ans.v[i]=v[i]*x;return ans;}
     Hash operator-(Hash x){Hash ans(NOB); for(int i=0;i<NOB;i++)ans.v[i]=v[i]-x.v[i];return ans;}
     Hash operator%(Hash x){Hash ans(NOB); for(int i=0;i<NOB;i++)ans.v[i]=v[i]%x.v[i];return ans;}
-    bool operator<(Hash x){for(int i=0;i<NOB;i++)if(v[i]!=x.v[i])return v[i]<x.v[i];return false;}
+    //bool operator<(Hash x){for(int i=0;i<NOB;i++)if(v[i]!=x.v[i])return v[i]<x.v[i];return false;}
+    friend bool operator<(Hash y,Hash x){for(int i=0;i<NOB;i++)if(y.v[i]!=x.v[i])return y.v[i]<x.v[i];return false;}
     bool operator==(Hash x){int i=0;while(i<NOB&&v[i]==x.v[i])i++;return i==NOB;}
     friend ostream& operator<<(ostream& s,Hash x)
     {
