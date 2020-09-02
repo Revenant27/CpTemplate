@@ -157,3 +157,32 @@ public:
         return mat[i];
     }
 };
+
+
+
+
+//Faster
+vector<vi> mul(vector<vi> &a,vector<vi> &b,ll md){
+    vector<vi> v(a.size(),vi(b[0].size()));
+    int l=a[0].size();
+    for(int i=0;i<v.size();i++){
+        for(int j=0;j<v[i].size();j++){
+            __int128 p=0;
+            for(int k=0;k<l;k++)p+=a[i][k]*b[k][j];
+            v[i][j]=p%md;
+        }
+    }
+    return v;
+}
+
+vector<vi> POWER(vector<vi> a,ll n,ll md){
+    vector<vi> ans(a.size(),vi(a.size()));
+    int m=a.size();
+    for(int i=0;i<m;i++)ans[i][i]=1;
+    while(n){
+        if(n&1)ans=mul(ans,a,md);
+        n>>=1;
+        if(n)a=mul(a,a,md);
+    }
+    return ans;
+}
