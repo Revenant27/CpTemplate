@@ -35,7 +35,7 @@ struct Tree_iso
             }
     }
     //O(nlogn)
-    bool Isomer_2(){
+    bool Iso_2(){
         dfs(rt[0],0);
         dfs(rt[1],1);
         for(int i=n-1; i>=0; i--)
@@ -76,7 +76,7 @@ struct Tree_iso
     }
 
     //O(n)
-    bool Isomer()
+    bool Iso()
     {
         dfs(rt[0],0);
         dfs(rt[1],1);
