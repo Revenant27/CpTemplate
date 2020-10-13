@@ -17,7 +17,7 @@ struct fft{
             w[1][i]=cd(cos(d),-sin(d));
         }
     }
-    void ftransform(vector<cd> &a,bool inv=false){
+    void FFT(vector<cd> &a,bool inv=false){
         for(int i=0;i<M;i++)if(i<r[i])swap(a[i],a[r[i]]);
         for(int len=2;len<=M;len<<=1){
             for(int i=0,inc=M/len;i<M;i+=len){
@@ -37,10 +37,10 @@ struct fft{
         vector<cd> v1(M),v2(M);
         for(int i=0;i<a.size();i++)v1[i]=a[i];
         for(int i=0;i<b.size();i++)v2[i]=b[i];
-        ftransform(v1);
-        ftransform(v2);
+        FFT(v1);
+        FFT(v2);
         for(int i=0;i<M;i++)v1[i]*=v2[i];
-        ftransform(v1,1);
+        FFT(v1,1);
         vector<ll> res(M);
         for(int i=0;i<M;i++)res[i]=round(v1[i].real());
         return res;
