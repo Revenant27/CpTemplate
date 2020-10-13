@@ -1,3 +1,53 @@
+struct fft{
+    using cd=complex<double>;
+    vector<cd> w[2];
+    vector<int> r;
+    int M=1;
+    fft(int n){
+        int u=0;
+        while(M<n)M<<=1,u++;
+        r.resize(M);
+        w[0].resize(M,cd(1));
+        w[1].resize(M,cd(1));
+        for(int i=1;i<M;i++){
+            int l=__builtin_ctz(i);
+            r[i]=r[i^(1<<l)]|(1<<(u-l-1));
+            double d=2*PI*i/M;
+            w[0][i]=cd(cos(d),sin(d));
+            w[1][i]=cd(cos(d),-sin(d));
+        }
+    }
+    void ftransform(vector<cd> &a,bool inv=false){
+        for(int i=0;i<M;i++)if(i<r[i])swap(a[i],a[r[i]]);
+        for(int len=2;len<=M;len<<=1){
+            for(int i=0,inc=M/len;i<M;i+=len){
+                for(int j=0,l=0;j<(len>>1);j++,l+=inc){
+                    cd u=a[i+j],v=a[i+j+(len>>1)]*w[inv][l];
+                    a[i+j]=u+v;
+                    a[i+j+(len>>1)]=u-v;
+                }
+            }
+        }
+        if(inv){
+            for(auto &x:a)x/=M;
+        }
+    }
+    vector<ll> multiply(vector<ll> &a,vector<ll> &b){
+//        assert(a.size()+b.size()<=M);
+        vector<cd> v1(M),v2(M);
+        for(int i=0;i<a.size();i++)v1[i]=a[i];
+        for(int i=0;i<b.size();i++)v2[i]=b[i];
+        ftransform(v1);
+        ftransform(v2);
+        for(int i=0;i<M;i++)v1[i]*=v2[i];
+        ftransform(v1,1);
+        vector<ll> res(M);
+        for(int i=0;i<M;i++)res[i]=round(v1[i].real());
+        return res;
+    }
+};
+
+//slow implementation of fft
 using cd=complex<double>;
 void fft(vector<cd> &a,bool invert)
 {
@@ -21,36 +71,39 @@ void fft(vector<cd> &a,bool invert)
         w*=wn;
     }
 }
-void fft(vector<cd> &a,bool invert)
-{
-    ll n=a.size();
-    ll lg_n=ceil(log2(n));
-    for(ll i=1,x=0;i<n;i++)
-    {
-        ll bit=1<<n;
-        for(;bit&x;bit>>=1)
-            x^=bit;
-        x^=bit;
-        if(i<x)swap(a[i],a[x]);
+
+//Works faster
+using cd=complex<double>;
+void fft(vector<cd> &a, bool invert) {
+    int n = a.size();
+ 
+    for (int i = 1, j = 0; i < n; i++) {
+        int bit = n >> 1;
+        for (; j & bit; bit >>= 1)
+            j ^= bit;
+        j ^= bit;
+ 
+        if (i < j)
+            swap(a[i], a[j]);
     }
-    for(ll l=2;l<=n;l<<=1)
-    {
-        double ang=2*PI/l*(invert?-1:1);
-        cd wn(cos(ang),sin(ang));
-        for(ll i=0;i<n;i+=l)
-        {
-           cd w(1);
-           for(int j=0;2*j<l;j++)
-           {
-               cd u=a[i+j],v=a[i+j+l/2]*w;
-               a[i+j]=u+v,a[i+j+l/2]=u-v;
-               w*=wn;
-           }
+ 
+    for (int len = 2; len <= n; len <<= 1) {
+        double ang = 2 * PI / len * (invert ? -1 : 1);
+        cd wlen(cos(ang), sin(ang));
+        for (int i = 0; i < n; i += len) {
+            cd w(1);
+            for (int j = 0; j < len / 2; j++) {
+                cd u = a[i+j], v = a[i+j+len/2] * w;
+                a[i+j] = u + v;
+                a[i+j+len/2] = u - v;
+                w *= wlen;
+            }
         }
     }
-    if(invert)
-    {
-        for(int i=0;i<n;i++)a[i]/=n;
+ 
+    if (invert) {
+        for (cd & x : a)
+            x /= n;
     }
 }
 vector<ll> multiply(vector<ll> &a,vector<ll> &b)
