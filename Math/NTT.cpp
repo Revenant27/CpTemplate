@@ -74,4 +74,13 @@ struct NTT{
         fft(v1,1);
         return v1;
     }
+    
+    vector<ll> POWER(vector<ll> &a,ll n){
+        vector<ll> v1(M);
+        for(int i=0;i<a.size();i++)v1[i]=a[i];
+        fft(v1);
+        for(int i=0;i<M;i++)v1[i]=bigmod(v1[i],n,MD);
+        fft(v1,1);
+        return v1;
+    }
 };
