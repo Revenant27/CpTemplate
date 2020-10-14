@@ -6,6 +6,17 @@ struct FFT{
         cd operator+(cd &o){return cd(a+o.a,b+o.b);}
         cd operator-(cd &o){return cd(a-o.a,b-o.b);}
         cd operator*(cd &o){return cd(a*o.a-b*o.b,a*o.b+b*o.a);}
+        cd pw(ll n){
+            if(n==0)return cd(1);
+            cd ans(1);
+            cd temp=*this;
+            while(n){
+                if(n&1)ans=ans*temp;
+                temp=temp*temp;
+                n>>=1;
+            }
+            return ans;
+        }
     };
     vector<cd> w[2];
     vector<int> r;
@@ -42,11 +53,21 @@ struct FFT{
     vector<ll> multiply(vector<ll> &a,vector<ll> &b){
 //        assert(a.size()+b.size()<=M);
         vector<cd> v1(M),v2(M);
-        for(int i=0;i<a.size();i++)v1[i]=a[i];
-        for(int i=0;i<b.size();i++)v2[i]=b[i];
+        for(int i=0;i<a.size();i++)v1[i].a=a[i];
+        for(int i=0;i<b.size();i++)v2[i].a=b[i];
         fft(v1);
         fft(v2);
         for(int i=0;i<M;i++)v1[i]=v1[i]*v2[i];
+        fft(v1,1);
+        vector<ll> res(M);
+        for(int i=0;i<M;i++)res[i]=round(v1[i].a);
+        return res;
+    }
+    vector<ll> POWER(vector<ll> &a,ll n){
+        vector<cd> v1(M);
+        for(int i=0;i<a.size();i++)v1[i].a=a[i];
+        fft(v1);
+        for(int i=0;i<M;i++)v1[i]=v1[i].pw(n);
         fft(v1,1);
         vector<ll> res(M);
         for(int i=0;i<M;i++)res[i]=round(v1[i].a);
