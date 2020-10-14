@@ -1,9 +1,9 @@
-struct fft{
+struct FFT{
     using cd=complex<double>;
     vector<cd> w[2];
     vector<int> r;
     int M=1;
-    fft(int n){
+    FFT(int n){
         int u=0;
         while(M<n)M<<=1,u++;
         r.resize(M);
@@ -17,7 +17,7 @@ struct fft{
             w[1][i]=cd(cos(d),-sin(d));
         }
     }
-    void FFT(vector<cd> &a,bool inv=false){
+    void fft(vector<cd> &a,bool inv=false){
         for(int i=0;i<M;i++)if(i<r[i])swap(a[i],a[r[i]]);
         for(int len=2;len<=M;len<<=1){
             for(int i=0,inc=M/len;i<M;i+=len){
@@ -37,10 +37,10 @@ struct fft{
         vector<cd> v1(M),v2(M);
         for(int i=0;i<a.size();i++)v1[i]=a[i];
         for(int i=0;i<b.size();i++)v2[i]=b[i];
-        FFT(v1);
-        FFT(v2);
+        fft(v1);
+        fft(v2);
         for(int i=0;i<M;i++)v1[i]*=v2[i];
-        FFT(v1,1);
+        fft(v1,1);
         vector<ll> res(M);
         for(int i=0;i<M;i++)res[i]=round(v1[i].real());
         return res;
