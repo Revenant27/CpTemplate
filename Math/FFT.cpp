@@ -1,5 +1,12 @@
+
 struct FFT{
-    using cd=complex<double>;
+    struct cd{
+        double a,b;
+        cd(double _a=0,double _b=0):a(_a),b(_b){}
+        cd operator+(cd &o){return cd(a+o.a,b+o.b);}
+        cd operator-(cd &o){return cd(a-o.a,b-o.b);}
+        cd operator*(cd &o){return cd(a*o.a-b*o.b,a*o.b+b*o.a);}
+    };
     vector<cd> w[2];
     vector<int> r;
     int M=1;
@@ -29,7 +36,7 @@ struct FFT{
             }
         }
         if(inv){
-            for(auto &x:a)x/=M;
+            for(auto &x:a)x.a/=M;
         }
     }
     vector<ll> multiply(vector<ll> &a,vector<ll> &b){
@@ -39,13 +46,14 @@ struct FFT{
         for(int i=0;i<b.size();i++)v2[i]=b[i];
         fft(v1);
         fft(v2);
-        for(int i=0;i<M;i++)v1[i]*=v2[i];
+        for(int i=0;i<M;i++)v1[i]=v1[i]*v2[i];
         fft(v1,1);
         vector<ll> res(M);
-        for(int i=0;i<M;i++)res[i]=round(v1[i].real());
+        for(int i=0;i<M;i++)res[i]=round(v1[i].a);
         return res;
     }
 };
+
 
 //slow implementation of fft
 using cd=complex<double>;
