@@ -26,12 +26,12 @@ struct FFT{
     }
     void fft(vector<cd> &a,bool inv=false){
         for(int i=0;i<M;i++)if(i<r[i])swap(a[i],a[r[i]]);
-        for(int len=2;len<=M;len<<=1){
+        for(int len=2,l2=1;len<=M;len<<=1,l2<<=1){
             for(int i=0,inc=M/len;i<M;i+=len){
-                for(int j=0,l=0;j<(len>>1);j++,l+=inc){
-                    cd u=a[i+j],v=a[i+j+(len>>1)]*w[inv][l];
+                for(int j=0,l=0;j<l2;j++,l+=inc){
+                    cd u=a[i+j],v=a[i+j+l2]*w[inv][l];
                     a[i+j]=u+v;
-                    a[i+j+(len>>1)]=u-v;
+                    a[i+j+l2]=u-v;
                 }
             }
         }
