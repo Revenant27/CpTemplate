@@ -31,7 +31,7 @@ struct NTT{
         }
         assert(false);
     }
-    NTT(int n,int _MD):MD(_MD){
+    NTT(ll n,ll _MD):MD(_MD){
         int u=0;
         while(M<n)M<<=1,u++;
         r.resize(M);
@@ -70,7 +70,7 @@ struct NTT{
         for(int i=0;i<b.size();i++)v2[i]=b[i];
         fft(v1);
         fft(v2);
-        for(int i=0;i<M;i++)v1[i]*=v2[i];
+        for(int i=0;i<M;i++)v1[i]=v1[i]*v2[i]%MD;
         fft(v1,1);
         return v1;
     }
