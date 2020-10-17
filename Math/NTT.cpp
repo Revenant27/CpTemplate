@@ -76,7 +76,7 @@ struct NTT{
     }
     
     void POWER(vector<ll> &a,ll n,vector<ll> &v1){
-        v1.assign(M,0);
+        v1.resize(M);
         for(int i=0;i<a.size();i++)v1[i]=a[i];
         fft(v1);
         for(int i=0;i<M;i++)v1[i]=bigmod(v1[i],n,MD);
