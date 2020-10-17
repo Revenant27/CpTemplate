@@ -63,24 +63,23 @@ struct NTT{
             for(auto &x:a)x=x*r%MD;
         }
     }
-    vector<ll> multiply(vector<ll> &a,vector<ll> &b){
+    void multiply(vector<ll> &a,vector<ll> &b,vector<ll> &v1){
 //        assert(a.size()+b.size()<=M);
-        vector<ll> v1(M),v2(M);
+        v1.assign(M,0);
+        vector<ll> v2(M);
         for(int i=0;i<a.size();i++)v1[i]=a[i];
         for(int i=0;i<b.size();i++)v2[i]=b[i];
         fft(v1);
         fft(v2);
         for(int i=0;i<M;i++)v1[i]=v1[i]*v2[i]%MD;
         fft(v1,1);
-        return v1;
     }
     
-    vector<ll> POWER(vector<ll> &a,ll n){
-        vector<ll> v1(M);
+    void POWER(vector<ll> &a,ll n,vector<ll> &v1){
+        v1.assign(M,0);
         for(int i=0;i<a.size();i++)v1[i]=a[i];
         fft(v1);
         for(int i=0;i<M;i++)v1[i]=bigmod(v1[i],n,MD);
         fft(v1,1);
-        return v1;
     }
 };
