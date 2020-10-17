@@ -57,7 +57,7 @@ void multiply(vector<ll> &a,vector<ll> &b,vector<ll> &v1){
     int n=max(a.size(),b.size());
     int M=1;
     while(M<n)M<<=1;
-    v1.assign(M,0);
+    v1.resize(M);
     vector<ll> v2(M);
     for(int i=0;i<a.size();i++)v1[i]=a[i];
     for(int i=0;i<b.size();i++)v2[i]=b[i];
