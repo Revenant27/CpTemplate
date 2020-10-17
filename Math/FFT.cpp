@@ -50,7 +50,7 @@ struct FFT{
             for(auto &x:a)x.a/=M;
         }
     }
-    vector<ll> multiply(vector<ll> &a,vector<ll> &b){
+    void multiply(vector<ll> &a,vector<ll> &b,vector<ll> &res){
 //        assert(a.size()+b.size()<=M);
         vector<cd> v1(M),v2(M);
         for(int i=0;i<a.size();i++)v1[i].a=a[i];
@@ -59,19 +59,17 @@ struct FFT{
         fft(v2);
         for(int i=0;i<M;i++)v1[i]=v1[i]*v2[i];
         fft(v1,1);
-        vector<ll> res(M);
+        res.resize(M);
         for(int i=0;i<M;i++)res[i]=round(v1[i].a);
-        return res;
     }
-    vector<ll> POWER(vector<ll> &a,ll n){
+    void POWER(vector<ll> &a,ll n,vector<ll> &res){
         vector<cd> v1(M);
         for(int i=0;i<a.size();i++)v1[i].a=a[i];
         fft(v1);
         for(int i=0;i<M;i++)v1[i]=v1[i].pw(n);
         fft(v1,1);
-        vector<ll> res(M);
+        res.resize(M);
         for(int i=0;i<M;i++)res[i]=round(v1[i].a);
-        return res;
     }
 };
 
