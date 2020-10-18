@@ -31,9 +31,6 @@ void AND(vector<ll> &a,bool inv=false){
             }
         }
     }
-    if(inv){
-        for(auto &x:a)x=x/M;
-    }
 }
 void OR(vector<ll> &a,bool inv=false){
     int M=a.size();
