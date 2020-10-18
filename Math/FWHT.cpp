@@ -20,7 +20,7 @@ void AND(vector<ll> &a,bool inv=false){
         for(int i=0,inc=M/len;i<M;i+=len){
             for(int j=0,l=0;j<l2;j++,l+=inc){
                 ll u=a[i+j],v=a[i+j+l2];
-                if(inverse){
+                if(inv){
                     a[i+j]=(-u+v);
                     a[i+j+l2]=u;
                 }
@@ -41,7 +41,7 @@ void OR(vector<ll> &a,bool inv=false){
         for(int i=0,inc=M/len;i<M;i+=len){
             for(int j=0,l=0;j<l2;j++,l+=inc){
                 ll u=a[i+j],v=a[i+j+l2];
-                if(inverse){
+                if(inv){
                     a[i+j]=v;
                     a[i+j+l2]=(u-v);
                 }
