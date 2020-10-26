@@ -1,12 +1,13 @@
 class input
 {
     const int string_size=1000000;
+    char temp[string_size];
 public:
     input& operator>>(int &x){scanf("%d",&x);return *this;}
     input& operator>>(long long int &x){scanf("%lld",&x);return *this;}
     input& operator>>(char &x){scanf("%c",&x);return *this;}
     input& operator>>(char s[]){scanf("%s",s);return *this;}
-    input& operator>>(string &s){char *temp=(char*)malloc(string_size);scanf("%s",temp);s=temp;free(temp);return *this;}
+    input& operator>>(string &s){scanf("%s",temp);s=temp;return *this;}
     input& operator>>(double &f){scanf("%lf",&f);return *this;}
     template <class L,class R> input& operator>>(pair<L,R> &x){(*this)>>x.first>>x.second;return *this;}
     template <class L> input& operator>>(vector<L> &x){for(L &y:x)(*this)>>y;return *this;}
