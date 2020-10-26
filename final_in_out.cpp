@@ -1,6 +1,6 @@
 class input
 {
-    const int string_size=1000000;
+    static const int string_size=1000000;
     char temp[string_size];
 public:
     input& operator>>(int &x){scanf("%d",&x);return *this;}
