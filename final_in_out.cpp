@@ -22,6 +22,7 @@ public:
     output& operator<<(char s[]){printf("%s",s);return *this;}
     output& operator<<(string s){printf("%s",s.c_str());return *this;}
     output& operator<<(double f){printf("%f",f);return *this;}
+    output& operator<<(basic_ostream<char,char_traits<char>>&(*f)(basic_ostream<char,char_traits<char>>&)){printf("\n");fflush(stdout);return *this;}
     void endl(){printf("\n");fflush(stdout);}
     template <class L,class R> output& operator<<(pair<L,R> &x){(*this)<<x.first<<' '<<x.second;return *this;}
     template <class L> output& operator<<(vector<L> &x){for(int i=0;i<x.size();i++){if(i!=0)(*this)<<' ';(*this)<<x[i];}endl();return *this;}
