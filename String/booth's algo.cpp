@@ -1,4 +1,5 @@
 int kmp[asz];
+//lexicographically-minimum-string-rotation
 int booth(string &s){
     s+=s;
     int ans=0;
