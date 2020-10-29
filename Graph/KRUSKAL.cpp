@@ -19,17 +19,20 @@ public:
 
 
 vii adj[asz];
-void KRUSKAL(vector<iii> &EDGELIST)
+ll KRUSKAL(vector<iii> &EDGELIST,int n)
 {
-    Unionfind un(asz);
+    ll ans=0;
+    Unionfind un(n);
     sort(EDGELIST.begin(),EDGELIST.end());
     for(auto x:EDGELIST)
     {
         if(!un.sameset(x.fi.se,x.se))
         {
             un.unionset(x.fi.se,x.se);
+            ans+=x.fi.fi;
             adj[x.fi.se].push_back(ii(x.se,x.fi.fi));
             adj[x.se].push_back(ii(x.fi.se,x.fi.fi));
         }
     }
+    return ans;
 }
