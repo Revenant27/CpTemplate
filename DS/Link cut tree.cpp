@@ -70,7 +70,7 @@ struct LinkCutTree{
     int access(int u){
         splay(u);
         detach(u);
-        int par=0;
+        int par=u;
         while(Nodes[u].path_parent){
             par=Nodes[u].path_parent;
             splay(par);
