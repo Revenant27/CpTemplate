@@ -117,12 +117,12 @@ struct LinkCutTree{
        splay(v);
        Nodes[v].path_parent=0;
     }
-    void update(int u,int w){
-        access(u);
-        Nodes[u].lazy+=w;
+    void update(int u,int v,int w){
+        makeRoot(u),access(v);
+        Nodes[v].lazy+=w;
     }
-    int query(int u){
-        access(u);
-        return Nodes[u].sub_val;
+    int query(int u,int v){
+        makeRoot(u),access(v);
+        return Nodes[v].sub_val;
     }
 };
