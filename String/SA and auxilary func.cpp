@@ -110,12 +110,13 @@ void compute_lcp(string &s)
 
 
 //SA using DA
-using namespace SA{
+namespace SA{
     const int N=1e5+5;
     const int log_N=20;
+    const int ALPHA= 155;
     int sa[N],ra[N],rnk[N],hg[N],n;
     int wa[N],wb[N],wws[N],wv[N];
-    int lg[N], st[N][LOG];
+    int lg[N], st[N][log_N];
     int cmp(int *r,int a,int b,int l){
         return (r[a]==r[b]) && (r[a+l]==r[b+l]);
     }
@@ -137,23 +138,9 @@ using namespace SA{
                 x[sa[i]]=cmp(y,sa[i-1],sa[i],j)?p-1:p++;
         }
     }
-    void create_sa(string  &s) {
-        n = s.size();
-        for(int i=0;i<max(n+1,ALPHA);i++) sa[i]=ra[i]=rnk[i]=hg[i]=wa[i]=wb[i]=wws[i]=wv[i]=0;
-        for (int i = 0; i < n; i++) ra[i] = s[i];
-        DA(ra,sa,n+1,ALPHA);
-        calheight(ra,sa,n);
-        init();
-    }
-    void calheight(int *r,int *sa,int n){
-        int i,j,k=0;
-        for(i=1;i<=n;i++) rnk[sa[i]]=i;
-        for(i=0;i<n;hg[rnk[i++]]=k)
-            for(k?k--:0,j=sa[rnk[i]-1];r[i+k]==r[j+k];k++);
-    }
     void init() {
         for(int i = 0; i <=n; i++) st[i][0] = hg[i];
-        for(int j = 1; j < log_n; j++) {
+        for(int j = 1; j < log_N; j++) {
             for(int i = 0; i <=n; i++) {
                 if (i+(1<<j)-1 <= n) st[i][j] = min(st[i][j-1],st[i+(1<<(j-1))][j-1]);
                 else break;
@@ -164,11 +151,25 @@ using namespace SA{
             lg[i] = lg[i/2] + 1;
         }
     }
+    void calheight(int *r,int *sa,int n){
+        int i,j,k=0;
+        for(i=1;i<=n;i++) rnk[sa[i]]=i;
+        for(i=0;i<n;hg[rnk[i++]]=k)
+            for(k?k--:0,j=sa[rnk[i]-1];r[i+k]==r[j+k];k++);
+    }
+    void create_sa(string  &s) {
+        n = s.size();
+        for(int i=0;i<max(n+1,ALPHA);i++) sa[i]=ra[i]=rnk[i]=hg[i]=wa[i]=wb[i]=wws[i]=wv[i]=0;
+        for (int i = 0; i < n; i++) ra[i] = s[i];
+        DA(ra,sa,n+1,ALPHA);
+        calheight(ra,sa,n);
+        init();
+    }
     //1 indexed
     int query(int l, int r) {
         if(l == r) return n-sa[l];
         l++;
         int k = lg[r-l+1];
-        return st(rmq[l][k],st[r-(1<<k)+1][k]);
+        return min(st[l][k],st[r-(1<<k)+1][k]);
     }
 }
