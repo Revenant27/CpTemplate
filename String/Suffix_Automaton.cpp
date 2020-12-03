@@ -35,3 +35,21 @@ void add_char(char c){
     }
     last=cur;
 }
+
+//cnt is the number of instances of an equivalence class //init cnt with 1 except for clones and starting node
+//d is the number of instances of an equivalence class being a prefix //to count distinct replace all the cnt with 1
+void pre(){
+    vector<vector<int>> v(sz+1);
+    for(int i=0;i<sz;i++)v[sa[i].len].push_back(i);
+    for(int i=sz;i>=0;i--)
+        for(auto x:v[i])
+        if(x)sa[sa[x].link].cnt+=sa[x].cnt;
+    sa[0].cnt=0; //ignoring empty substring
+    
+    for(int i=sz;i>=0;i--){
+        for(auto x:v[i]){
+            sa[x].d=sa[x].cnt;
+            for(auto u:sa[x].next)sa[x].d+=sa[u.se].d;
+        }
+    }
+}
