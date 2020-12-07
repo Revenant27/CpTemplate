@@ -218,3 +218,26 @@ struct Tree_iso
         return false;
     }
 };
+int main()
+{
+    fastread;
+    int T=1;
+    cin>>T;
+    for(int qq=1; qq<=T; qq++)
+    {
+        int n;
+        cin>>n;
+        Tree_iso tr(n);
+        for(int i=0; i<2; i++)
+        {
+            for(int j=0; j<n-1; j++)
+            {
+                int a,b;
+                cin>>a>>b;
+                tr.add_edge(i,a,b);
+            }
+        }
+        if(tr.ISO())cout<<"YES"<<endl;
+        else cout<<"NO"<<endl;
+    }
+}
