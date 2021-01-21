@@ -276,7 +276,7 @@ public:
     }
     T dist_to_point(POINT<T> p,POINT<T> &x)
     {
-        Line temp(a,-b,0);
+        Line temp(b,-a,0);
         temp.c=-temp.val(p);
         intersect(temp,x);
         return p.dist(x);
