@@ -448,5 +448,30 @@ public:
         for(int i=down.size()-2; i>0; i--)temp.push_back(down[i]);
         return temp;
     }
+    bool pointInTriangle(POINT<T> p,int l = 0){
+    	if(l+3>this->size())return false;
+    	Polygon<T> &ref = *this;
+    	for(int i=0;i<2;i++)if(ref[i+l].cw(ref[i+l+1],p))return false;
+    	return !ref[l+2].cw(ref[l],p);
+    }
+    bool isPointInside(POINT<T> p){
+    	Polygon<T> &ref = *this;
+        if(this->size()<=1)return false;
+        POINT<T> garb;
+        if(this->size()<=3){
+            return LineSegment<T>(ref[0],ref[1]).dist_to_point(p,garb)<eps;
+        }
+
+        int l = 1,r = this->size()-2;
+        while(r-l>1){
+            int mid = (l+r)/2;
+            if(ref[0].cw(ref[mid],p))r = mid;
+            else l = mid;
+        }
+        if(l == r){
+            return LineSegment<T>(ref[0],ref[l]).dist_to_point(p,garb)<eps;
+        }
+        return pointInTriangle(p,l);
+    }
 };
 };
