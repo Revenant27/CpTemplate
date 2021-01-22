@@ -449,20 +449,21 @@ public:
         return temp;
     }
     bool pointInTriangle(POINT<T> p,int l = 0){
-    	if(l+3>this->size())return false;
+    	if(this->size()<3||l>=this->size()||l<0)return false;
     	Polygon<T> &ref = *this;
-    	for(int i=0;i<2;i++)if(ref[i+l].cw(ref[i+l+1],p))return false;
-    	return !ref[l+2].cw(ref[l],p);
+    	for(int i=0;i<2;i++)if(ref[(i+l)%ref.size()].cw(ref[(i+l+1)%ref.size()],p))return false;
+    	return !ref[(l+2)%ref.size()].cw(ref[l],p);
     }
     bool isPointInside(POINT<T> p){
     	Polygon<T> &ref = *this;
-        if(this->size()<=1)return false;
+        if(this->size()<1)return false;
+        if(this->size() == 1)return ref[0] == p;
         POINT<T> garb;
-        if(this->size()<=3){
+        if(this->size() == 2){
             return LineSegment<T>(ref[0],ref[1]).dist_to_point(p,garb)<eps;
         }
 
-        int l = 1,r = this->size()-2;
+        int l = 1,r = this->size()-1;
         while(r-l>1){
             int mid = (l+r)/2;
             if(ref[0].cw(ref[mid],p))r = mid;
