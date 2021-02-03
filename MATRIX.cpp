@@ -190,7 +190,7 @@ vector<vi> POWER(vector<vi> a,ll n,ll md){
 
 //static array construction
 //r = a*b;
-//pr = a^n;
+//pr = b^n;
 
 
 const int N = 35;
