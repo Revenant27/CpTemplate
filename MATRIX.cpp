@@ -186,3 +186,36 @@ vector<vi> POWER(vector<vi> a,ll n,ll md){
     }
     return ans;
 }
+
+
+//static array construction
+//r = a*b;
+//pr = a^n;
+ll a[3][3],b[3][3],r[3][3],pr[3][3];
+void mul(ll md){
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            ll p=0;
+            for(int k=0;k<3;k++)p=(p+a[i][k]*b[k][j])%md;
+            r[i][j]=p;
+        }
+    }
+}
+void POWER(ll n,ll md){
+    memset(pr,0,sizeof pr);
+    for(int i=0;i<3;i++)pr[i][i]=1;
+    while(n){
+        if(n&1){
+            for(int i=0;i<3;i++)for(int j=0;j<3;j++)a[i][j] = pr[i][j];
+            mul(md);
+            for(int i=0;i<3;i++)for(int j=0;j<3;j++)pr[i][j] = r[i][j];
+        }
+        n>>=1;
+        if(n){
+            for(int i=0;i<3;i++)for(int j=0;j<3;j++)a[i][j] = b[i][j];
+            mul(md);
+            for(int i=0;i<3;i++)for(int j=0;j<3;j++)b[i][j] = r[i][j];
+
+        }
+    }
+}
