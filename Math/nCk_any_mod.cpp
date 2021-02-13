@@ -1,3 +1,4 @@
+
 namespace COMB
 {
     ll bigmod(ll a,ll p, ll m)
@@ -60,9 +61,11 @@ namespace COMB
         vi f(md);
         f[0] = 1;
         for(int i=1; i<md; i++)f[i] = f[i-1]*(i%p==0?1:i)%md;
-
+        int cnt = 0;
         while(n)
         {
+            cnt++;
+            if(cnt>=a-1&&n%p<k%p)ans*=sg;
             ans = ans*nCk_p(n%md,k%md,r%md,p,md,f)%md;
             n/=p,k/=p,r/=p;
         }
