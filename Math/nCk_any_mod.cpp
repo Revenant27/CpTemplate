@@ -108,7 +108,7 @@ namespace COMB
     }
     ll nCk_any_mod(ll n,ll k,ll md)
     {
-        if(n<k)return 0;
+        if(n<k||k<0)return 0;
         if(md <= 1) return 0;
         vii all;
 
