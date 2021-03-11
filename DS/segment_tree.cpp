@@ -60,3 +60,30 @@ int update(ll node,ll ss,ll sf,ll pos,int val)    //returns i(pos)-th smallest e
     st[node]=f(st[2*node],st[2*node+1]);
     return x;
 }
+
+
+//Iterative
+
+ll st[4*asz];
+void update(int k,int val,int n)
+{
+    k+=n;
+    st[k] = val;
+    while(k>1){
+        st[k>>1] = max(st[k],st[k^1]);
+        k>>=1;
+    }
+}
+ll query(int l,int r,int n)
+{
+    l+=n,r+=n;
+    r++;
+    ll ans = 0;
+    while(l<r){
+        if(l&1)ans = max(ans,st[l++]);
+        if(r&1)ans = max(ans,st[--r]);
+        l>>=1;
+        r>>=1;
+    }
+    return ans;
+}
