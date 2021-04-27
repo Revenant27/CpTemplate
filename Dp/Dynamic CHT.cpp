@@ -1,4 +1,5 @@
 // In case of initializing 'ans', check if 1e18 is enough. Might need LLONG_MAX
+//HLD for finding max
 const ll is_query = -(1LL<<62);
 struct Line {
   ll m, b;
