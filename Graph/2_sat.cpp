@@ -1,9 +1,7 @@
-
-//2 sat
-set<ll> adj[2][asz];
-ll vis[asz],comp[asz],sat[asz];
+vi adj[2][asz];
+int vis[asz],comp[asz],sat[asz];
 vi ts;
-void dfs(ll ind,ll r,ll d=-1)
+void dfs(int ind,int r,int d=-1)
 {
     vis[ind]=1;
     if(r)comp[ind]=d;
@@ -11,7 +9,7 @@ void dfs(ll ind,ll r,ll d=-1)
         if(vis[x]==0)dfs(x,r,d);
     if(!r)ts.push_back(ind);
 }
-bool solve_2_sat(ll n)
+bool solve_2_sat(int n)
 {
     for(int i=0; i<n; i++)if(vis[i]==0)dfs(i,0);
     memset(vis,0,sizeof vis);
