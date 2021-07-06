@@ -163,6 +163,15 @@ public:
         return ans;
     }
     vert query(int l,int r){return query(l,r,root);}
+    void clear(pitem t){
+        if(t == NULL)return;
+        clear(t->l);
+        clear(t->r);
+        delete t;
+    }
+    ~Treap(){
+        clear(root);
+    }
 };
 
 
@@ -323,6 +332,15 @@ public:
     vert query(int l,int r){return query(l,r,root);}
     size_t size(){
         return get_sz(root);
+    }
+    void clear(pitem t){
+        if(t == NULL)return;
+        clear(t->l);
+        clear(t->r);
+        delete t;
+    }
+    ~Treap(){
+        clear(root);
     }
 };
 
@@ -498,6 +516,15 @@ public:
     size_t size(){
         return get_sz(root);
     }
+    void clear(pitem t){
+        if(t == NULL)return;
+        clear(t->l);
+        clear(t->r);
+        delete t;
+    }
+    ~Treap(){
+        clear(root);
+    }
 };
 
 
@@ -655,4 +682,13 @@ public:
         return ans;
     }
     vert query(int l,int r){return query(l,r,root);}
+    void clear(pitem t){
+        if(t == NULL)return;
+        clear(t->l);
+        clear(t->r);
+        delete t;
+    }
+    ~Treap(){
+        clear(root);
+    }
 };
