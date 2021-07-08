@@ -87,3 +87,25 @@ vector<pt> convexHull(vector<pt> v){
     return lower;
     
 }
+
+
+bool pointInConvex(vector<pt> &v, pt &a){
+    //v must be sorted in CCW
+    int n = v.size();
+    if(n == 1)return v[0] == a;
+    if(n == 2){
+        if(orient(v[0], v[1], a) != 0)return false;
+        return !ldcmp(abs(a-v[0]) + abs(v[1]-a) - abs(v[1]-v[0]));
+    }
+    
+    int l = 1, r = n-2;
+    while(l < r){
+        int mid = (l + r + 1)/2;
+        if(orient(v[0], v[mid], a) < 0) r = mid - 1;
+        else l = mid;
+    }
+    
+    if(!insideAngle(v[0], v[l], v[l+1], a))return false;
+    if(!insideAngle(v[l], v[0], v[l+1], a))return false;
+    return true;
+}
