@@ -15,6 +15,7 @@ struct pt{
 };
 
 bool operator==(pt a, pt b) {return !ldcmp(a.x-b.x) && !ldcmp(a.y-b.y);}
+bool operator<(const pt &a, const pt &b) {return a.x == b.x? a.y<b.y : a.x<b.x;}
 
 T norm(pt p) {return p.x*p.x + p.y*p.y;}
 ld abs(pt p) {return sqrt((ld)norm(p));}
