@@ -62,3 +62,27 @@ bool half(pt p) { return p.y > 0 || p.x < 0 && p.y == 0;}
 bool polarCmp(pt a, pt b, pt o = {0,0}){
     return make_tuple(half(a-o), 0, norm(a-o)) < make_tuple(half(b-o), cross(a-o, b-o), norm(b-o));
 }
+
+
+vector<pt> convexHull(vector<pt> v){
+    int n = v.size();
+    
+    if(n <= 2)return v;
+    sort(v.begin(), v.end(), [&](pt &a, pt &b){
+        return a.x == b.x ? (a.y < b.y) : (a.x < b.x);
+    });
+    
+    vector<pt> upper({v[0],v[1]}), lower({v[0],v[1]});
+    
+    for(int i = 2; i < n; i++){
+        while(upper.size() > 1 && orient(upper[upper.size() - 2], upper.back(), v[i]) <= 0) upper.pop_back();
+        while(lower.size() > 1 && orient(lower[lower.size() - 2], lower.back(), v[i]) >= 0) lower.pop_back();
+        lower.push_back(v[i]);
+        upper.push_back(v[i]);
+    }
+    upper.pop_back();
+    while(upper.size() > 1)lower.push_back(upper.back()), upper.pop_back();
+    
+    return lower;
+    
+}
